@@ -13,8 +13,10 @@ import (
 
 func WithJWTAuth(handlerFunc http.HandlerFunc, store Store) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
 		//get the token from the request header
 		tokenString := GetTokenFromRequest(r)
+
 		// validate the token
 		token, err := validateJWT(tokenString)
 		if err != nil {
@@ -27,15 +29,17 @@ func WithJWTAuth(handlerFunc http.HandlerFunc, store Store) http.HandlerFunc {
 			permissionDenied(w)
 			return
 		}
+
 		// get the userID from the token
 		claims := token.Claims.(jwt.MapClaims)
 		userID := claims["userID"].(string)
-		_, err = store.GetUserByID(userID) 
+		_, err = store.GetUser(userID)
 		if err != nil {
 			log.Println("failed to get user")
 			permissionDenied(w)
 			return
 		}
+
 		// call the handler func and continue to the endpoint
 		handlerFunc(w, r)
 	}
@@ -46,8 +50,6 @@ func permissionDenied(w http.ResponseWriter) {
 		Error: fmt.Errorf("permission denied").Error(),
 	})
 }
-
-// DOUBT : no idea what this does
 
 func validateJWT(tokenString string) (*jwt.Token, error) {
 	secret := []byte(Envs.JWTSecret)

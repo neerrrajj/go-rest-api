@@ -11,7 +11,7 @@ type MySQLStorage struct {
 	db *sql.DB
 }
 
-func NewMySQLStorage (cfg mysql.Config) *MySQLStorage {
+func NewMySQLStorage(cfg mysql.Config) *MySQLStorage {
 	log.Println("connecting to MySQL...")
 	db, err := sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
@@ -42,8 +42,6 @@ func (s *MySQLStorage) Init() (*sql.DB, error) {
 	}
 	return s.db, nil
 }
-
-// DOUBT : how do we know we can use .Exec() on a sql.db ?
 
 func (s *MySQLStorage) createProjectsTable() error {
 	_, err := s.db.Exec(`

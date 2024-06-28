@@ -24,7 +24,6 @@ func NewUserService(s Store) *UserService {
 
 func (s *UserService) RegisterRoutes(r *mux.Router) {
 	r.HandleFunc("/users/register", s.handleUserRegister).Methods("POST")
-	r.HandleFunc("/users/login", s.handleUserLogin).Methods("POST")
 }
 
 func (s *UserService) handleUserRegister(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +32,6 @@ func (s *UserService) handleUserRegister(w http.ResponseWriter, r *http.Request)
 		http.Error(w, "Error reading request body", http.StatusBadRequest)
 		return
 	}
-
 	defer r.Body.Close()
 
 	var payload *User
@@ -68,13 +66,6 @@ func (s *UserService) handleUserRegister(w http.ResponseWriter, r *http.Request)
 	}
 
 	WriteJSON(w, http.StatusCreated, token)
-}
-
-func (s *UserService) handleUserLogin(w http.ResponseWriter, r *http.Request) {
-	// 1. Find user in db by email
-	// 2. Compare password with hashed password
-	// 3. Create JWT and set it in a cookie
-	// 4. Return JWT in response
 }
 
 func validateUserPayload(user *User) error {

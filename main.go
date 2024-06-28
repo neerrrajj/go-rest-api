@@ -8,13 +8,13 @@ import (
 
 func main() {
 	cfg := mysql.Config{
-		User: Envs.DBUser,
-		Passwd: Envs.DBPasswrod,
-		Addr: Envs.DBAddress,
-		DBName: Envs.DBName,
-		Net: "tcp",
+		User:                 Envs.DBUser,
+		Passwd:               Envs.DBPasswrod,
+		Addr:                 Envs.DBAddress,
+		DBName:               Envs.DBName,
+		Net:                  "tcp",
 		AllowNativePasswords: true,
-		ParseTime: true,
+		ParseTime:            true,
 	}
 
 	sqlStorage := NewMySQLStorage(cfg)
@@ -23,10 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// DOUBT : what is the diff bt DB and Store? 
-	// DOUBT : where and how is the DB instance passed in?
-
-	store := NewStore(db)
+	store := NewStorage(db)
 
 	api := NewAPIServer(":8080", store)
 	api.Serve()
