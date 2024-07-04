@@ -36,7 +36,7 @@ RESTful API Server built with Go for managing projects and tasks. It features us
     docker run --name project-manager-db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=project-manager -p 3306:3306 -d mysql
     ```
 
-3. Run the API Server container:
+3. Run the API Server container and link it with the MySQL container:
     ```sh
     docker run --name go-rest-api --link project-manager-db:db -e DB_HOST=db -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=password -e DB_NAME=project-manager -p 8080:8080 go-rest-api
     ```
